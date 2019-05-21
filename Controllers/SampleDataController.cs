@@ -17,6 +17,7 @@ namespace ArktiPhonesWebApp.Controllers
         [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
+            System.Threading.Thread.Sleep(1000);
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -24,6 +25,12 @@ namespace ArktiPhonesWebApp.Controllers
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
             });
+        }
+
+        [HttpGet("[action]")]
+        public string Testing()
+        {
+            return "it seems to be working";
         }
 
         public class WeatherForecast
