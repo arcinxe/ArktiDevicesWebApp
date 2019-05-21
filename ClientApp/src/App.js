@@ -6,16 +6,18 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Phones } from './components/Phones';
 
+
 export default class App extends Component {
   static displayName = App.name;
 
-  render () {
+  render() {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/devices' component={Phones} />
+        {/* <Route path='/chart' component={Chart} /> */}
       </Layout>
     );
   }
