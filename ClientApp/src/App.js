@@ -5,6 +5,7 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Phones } from './components/Phones';
+import { TestPage } from './components/TestPage';
 
 
 export default class App extends Component {
@@ -17,7 +18,7 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/devices' component={Phones} />
-        {/* <Route path='/chart' component={Chart} /> */}
+        <Route path='/test-page' component={TestPage} />
       </Layout>
     );
   }
