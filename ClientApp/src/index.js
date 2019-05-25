@@ -6,6 +6,9 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'jquery/dist/jquery.min.js'
+// import 'bootstrap-multiselect/dist/js/bootstrap-multiselect.js'
+// import 'bootstrap-multiselect/dist/css/bootstrap-multiselect.css'
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');

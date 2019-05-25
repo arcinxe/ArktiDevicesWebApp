@@ -29,8 +29,37 @@ namespace ArktiPhonesWebApp.Controllers {
     }
 
     [HttpGet ("[action]")]
-    public object PhonesWithJack (int startYear = 2007, int endYear = 2018, string selectedBrandsIds = "") {
-// System.Threading.Thread.Sleep(3000);
+    public object PhonesWithJackDetails (int year, bool withJack, string selectedBrandsIds = "") {
+      if (year < 1900)
+        return new List<string> ();
+      var allDevices = _repo.GetDevices ()
+        .Where (p => p.Status.ReleasedDate.Year != null &&
+          p.Status.ReleasedDate.Year == year);
+
+      if (!string.IsNullOrWhiteSpace (selectedBrandsIds)) {
+        var brandsIds = selectedBrandsIds
+          .Split (',')
+          .Select (id => int.Parse (id));
+        var brands = Constants.Brands
+          .Where (b => brandsIds.Contains (b.ID))
+          .Select (b => b.Name);
+        var filteredDevices = allDevices.Where (d => brands.Contains (d.Brand));
+        allDevices = filteredDevices;
+      }
+
+      var data = allDevices.Where (p => p.Status.ReleasedDate.Year == year)
+        .Where (ph => ph.Communication.AudioJack.HasValue && (!withJack ^ ph.Communication.AudioJack.Value))
+        .OrderBy (ph => ph.Brand)
+        .ThenBy (ph => ph.Name)
+        .Select (ph => new { Name = ph.Name, Brand = ph.Brand, DeviceType = ph.Basic.DeviceType })
+        .ToList ();
+      var results = new { Year = year, Jack = withJack, devices = data };
+      return results;
+    }
+
+    [HttpGet ("[action]")]
+    public object PhonesWithJack (int startYear = 2006, int endYear = 2019, string selectedBrandsIds = "") {
+      // System.Threading.Thread.Sleep(3000);
       var allDevices = _repo.GetDevices ()
         .Where (p => p.Status.ReleasedDate.Year != null &&
           p.Status.ReleasedDate.Year >= startYear &&
@@ -53,7 +82,70 @@ namespace ArktiPhonesWebApp.Controllers {
         .Select (p => new {
           Year = p.Key.ToString (),
             Jack = p.Where (ph => ph.Communication.AudioJack.HasValue && ph.Communication.AudioJack.Value).Select (ph => ph.Communication.AudioJack.Value).Count (),
-            NoJack = p.Where (ph => ph.Communication.AudioJack.HasValue && !ph.Communication.AudioJack.Value).Select (ph => ph.Communication.AudioJack.Value).Count ()
+            NoJack = p.Where (ph => ph.Communication.AudioJack == null || !ph.Communication.AudioJack.Value).Select (ph => ph.Communication.AudioJack).Count (),
+            // JackDevices = p.Where (ph => ph.Communication.AudioJack.HasValue && ph.Communication.AudioJack.Value).Select (ph => new {Name = ph.Name, Brand = ph.Brand, DeviceType = ph.Basic.DeviceType}),
+            // NoJackDevices = p.Where (ph => ph.Communication.AudioJack.HasValue && !ph.Communication.AudioJack.Value).Select (ph => new {Name = ph.Name, Brand = ph.Brand, DeviceType = ph.Basic.DeviceType} ),
+        }).ToList ();
+      return data;
+    }
+
+    [HttpGet ("[action]")]
+    public object PhonesWithInfraredDetails (int year, bool withInfrared, string selectedBrandsIds = "") {
+      if (year < 1900)
+        return new List<string> ();
+      var allDevices = _repo.GetDevices ()
+        .Where (p => p.Status.ReleasedDate.Year != null &&
+          p.Status.ReleasedDate.Year == year);
+
+      if (!string.IsNullOrWhiteSpace (selectedBrandsIds)) {
+        var brandsIds = selectedBrandsIds
+          .Split (',')
+          .Select (id => int.Parse (id));
+        var brands = Constants.Brands
+          .Where (b => brandsIds.Contains (b.ID))
+          .Select (b => b.Name);
+        var filteredDevices = allDevices.Where (d => brands.Contains (d.Brand));
+        allDevices = filteredDevices;
+      }
+
+      var data = allDevices.Where (p => p.Status.ReleasedDate.Year == year)
+        .Where (ph => !withInfrared ^ ph.Communication.Infrared)
+        .OrderBy (ph => ph.Brand)
+        .ThenBy (ph => ph.Name)
+        .Select (ph => new { Name = ph.Name, Brand = ph.Brand, DeviceType = ph.Basic.DeviceType })
+        .ToList ();
+      var results = new { Year = year, Infrared = withInfrared, devices = data };
+      return results;
+    }
+
+    [HttpGet ("[action]")]
+    public object PhonesWithInfrared (int startYear = 2006, int endYear = 2019, string selectedBrandsIds = "") {
+      // System.Threading.Thread.Sleep(3000);
+      var allDevices = _repo.GetDevices ()
+        .Where (p => p.Status.ReleasedDate.Year != null &&
+          p.Status.ReleasedDate.Year >= startYear &&
+          p.Status.ReleasedDate.Year <= endYear);
+
+      if (!string.IsNullOrWhiteSpace (selectedBrandsIds)) {
+        var brandsIds = selectedBrandsIds
+          .Split (',')
+          .Select (id => int.Parse (id));
+        var brands = Constants.Brands
+          .Where (b => brandsIds.Contains (b.ID))
+          .Select (b => b.Name);
+        var filteredDevices = allDevices.Where (d => brands.Contains (d.Brand));
+        allDevices = filteredDevices;
+      }
+
+      var data = allDevices
+        .OrderByDescending (p => p.Status.ReleasedDate.Year)
+        .GroupBy (p => p.Status.ReleasedDate.Year)
+        .Select (p => new {
+          Year = p.Key.ToString (),
+            Infrared = p.Where (ph => ph.Communication.Infrared).Select (ph => ph.Communication.Infrared).Count (),
+            NoInfrared = p.Where (ph => !ph.Communication.Infrared).Select (ph => ph.Communication.Infrared).Count (),
+            // InfraredDevices = p.Where (ph => ph.Communication.AudioInfrared.HasValue && ph.Communication.AudioInfrared.Value).Select (ph => new {Name = ph.Name, Brand = ph.Brand, DeviceType = ph.Basic.DeviceType}),
+            // NoInfraredDevices = p.Where (ph => ph.Communication.AudioInfrared.HasValue && !ph.Communication.AudioInfrared.Value).Select (ph => new {Name = ph.Name, Brand = ph.Brand, DeviceType = ph.Basic.DeviceType} ),
         }).ToList ();
       return data;
     }

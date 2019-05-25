@@ -5,7 +5,9 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import { Phones } from './components/Phones';
-import { TestPage } from './components/TestPage';
+// import { TestPage } from './components/TestPage';
+import { MiniJackChart } from './components/MiniJackChart';
+import { InfraredChart } from './components/InfraredChart';
 
 
 export default class App extends Component {
@@ -18,7 +20,8 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/devices' component={Phones} />
-        <Route path='/test-page' component={TestPage} />
+        <Route path='/minijack' component={MiniJackChart} />
+        <Route path='/infrared' component={InfraredChart} />
       </Layout>
     );
   }

@@ -8,16 +8,23 @@ namespace ArktiPhonesWebApp {
         static Constants () {
             var count = 1;
             var db = new DeviceContext ();
-            Brands = db.DeviceDetails.Select (d => d.Brand)
-                .Distinct ()
-                .OrderBy (b => b)
+
+            Brands = db.DeviceDetails
+                .Where (d => d.Status.ReleasedDate.Year != null)
+                .GroupBy (p => p.Brand)
+                .Select (p => new {
+                    Name = p.Key,
+                        NumberOfDevices = p.Select (ph => ph.Brand).Count ()
+                })
                 .ToList ()
-                .Select (d => new Brand { ID = count++, Name = d })
+                .Select (b => new Brand { ID = count++, Name = b.Name, NumberOfDevices = b.NumberOfDevices })
+                .OrderBy (p => p.Name)
                 .ToList ();
         }
     }
     public class Brand {
         public int ID { get; set; }
         public string Name { get; set; }
+        public int NumberOfDevices { get; set; }
     }
 }

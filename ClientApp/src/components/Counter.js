@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MyResponsiveBar from './Chart';
+import MyResponsiveBar from './MyResponsiveBar';
 
 export class Counter extends Component {
   static displayName = Counter.name;

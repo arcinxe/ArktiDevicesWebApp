@@ -5,15 +5,15 @@ import { ResponsiveBar } from '@nivo/bar'
 // no chart will be rendered.
 // website examples showcase many properties,
 // you'll often use just a few of them.
-const MyResponsiveBarTest = ({ data, keys, indexBy /* see data tab */ }) => (
+const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors /* see data tab */ }) => (
     <ResponsiveBar
         data={data}
         keys={keys}
         indexBy={indexBy}
         margin={{ top: 50, right: 10, bottom: 50, left: 30 }}
         padding={0.3}
-        colors={{ scheme: 'category10' }}
-        borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+        colors={colors}
+        borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
             tickSize: 5,
             tickPadding: 5,
@@ -26,13 +26,13 @@ const MyResponsiveBarTest = ({ data, keys, indexBy /* see data tab */ }) => (
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: 'amount of phones',
+            legend: 'amount of phone models',
             legendPosition: 'middle',
-            legendOffset: -40
+            legendOffset: 10
         }}
         labelSkipWidth={12}
         labelSkipHeight={12}
-        labelTextColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+        labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         legends={[
             {
                 dataFrom: 'keys',
@@ -57,10 +57,47 @@ const MyResponsiveBarTest = ({ data, keys, indexBy /* see data tab */ }) => (
                 ]
             }
         ]}
+        //  defs={[
+        //     {
+        //         id: 'infrared',
+        //         type: 'patternLines',
+        //         background: '#E57373',
+        //         color: '#E57373',
+        //         // size: 4,
+        //         // padding: 1,
+        //         stagger: true
+        //     },
+        //     {
+        //         id: 'default',
+        //         type: 'patternLines',
+        //         background: '#42A5F5',
+        //         color: '#42A5F5',
+        //     }
+        // ]}
+        // fill={[
+        //     {
+        //         match: {
+        //             id: 'infrared'
+        //         },
+        //         id: 'infrared'
+        //     },
+        //     {
+        //         match: {
+        //             id: 'noInfrared'
+        //         },
+        //         id: 'default'
+        //     },
+        //     {
+        //         match: {
+        //             id: 'jack'
+        //         },
+        //         id: 'default'
+        //     }
+        // ]}
         animate={true}
         motionStiffness={90}
         motionDamping={15}
-        onClick={function(...theArgs) { console.log(theArgs[0]) }}
+        onClick={onClick}
     />
 )
 
