@@ -96,7 +96,7 @@ export class MiniJackChart extends Component {
     // const { selectedOption } = this.state;
     let keys = ['jack', 'noJack'];
     let indexBy = "year";
-    let colors = colors=[ '#42A5F5', '#E57373'];
+    let colors =[ '#42A5F5', '#E57373'];
     let contents = this.state.loading
       ? <div><p><em>Loading...</em></p> <Spinner color="info" /> </div>
       : <MyResponsiveBarTest data={this.state.phones} keys={keys} indexBy={indexBy} onClick={this.handleBarClick} colors={colors}></MyResponsiveBarTest>

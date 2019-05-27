@@ -5,7 +5,7 @@ import { ResponsiveBar } from '@nivo/bar'
 // no chart will be rendered.
 // website examples showcase many properties,
 // you'll often use just a few of them.
-const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors /* see data tab */ }) => (
+const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors, labelTextColor /* see data tab */ }) => (
     <ResponsiveBar
         data={data}
         keys={keys}
@@ -13,6 +13,7 @@ const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors /* see data 
         margin={{ top: 50, right: 10, bottom: 50, left: 30 }}
         padding={0.3}
         colors={colors}
+        labelTextColor={labelTextColor}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisBottom={{
             tickSize: 5,
@@ -32,7 +33,7 @@ const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors /* see data 
         }}
         labelSkipWidth={12}
         labelSkipHeight={12}
-        labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+        // labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         legends={[
             {
                 dataFrom: 'keys',
@@ -42,11 +43,11 @@ const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors /* see data 
                 translateX: 0,
                 translateY: -40,
                 itemsSpacing: 2,
-                itemWidth: 100,
+                itemWidth: 50,
                 itemHeight: 20,
                 itemDirection: 'left-to-right',
                 itemOpacity: 0.85,
-                symbolSize: 20,
+                symbolSize: 10,
                 effects: [
                     {
                         on: 'hover',

@@ -8,6 +8,7 @@ import { Phones } from './components/Phones';
 // import { TestPage } from './components/TestPage';
 import { MiniJackChart } from './components/MiniJackChart';
 import { InfraredChart } from './components/InfraredChart';
+import { RamChart } from './components/RamChart';
 
 
 export default class App extends Component {
@@ -22,6 +23,7 @@ export default class App extends Component {
         <Route path='/devices' component={Phones} />
         <Route path='/minijack' component={MiniJackChart} />
         <Route path='/infrared' component={InfraredChart} />
+        <Route path='/ram' component={RamChart} />
       </Layout>
     );
   }
