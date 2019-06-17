@@ -5,7 +5,7 @@ import { ResponsiveBar } from '@nivo/bar'
 // no chart will be rendered.
 // website examples showcase many properties,
 // you'll often use just a few of them.
-const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors, labelTextColor /* see data tab */ }) => (
+const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors, labelTextColor, itemsSpacing }) => (
     <ResponsiveBar
         data={data}
         keys={keys}
@@ -42,7 +42,7 @@ const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors, labelTextCo
                 justify: false,
                 translateX: 0,
                 translateY: -40,
-                itemsSpacing: 2,
+                itemsSpacing: itemsSpacing,
                 itemWidth: 50,
                 itemHeight: 20,
                 itemDirection: 'left-to-right',
@@ -58,43 +58,7 @@ const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, colors, labelTextCo
                 ]
             }
         ]}
-        //  defs={[
-        //     {
-        //         id: 'infrared',
-        //         type: 'patternLines',
-        //         background: '#E57373',
-        //         color: '#E57373',
-        //         // size: 4,
-        //         // padding: 1,
-        //         stagger: true
-        //     },
-        //     {
-        //         id: 'default',
-        //         type: 'patternLines',
-        //         background: '#42A5F5',
-        //         color: '#42A5F5',
-        //     }
-        // ]}
-        // fill={[
-        //     {
-        //         match: {
-        //             id: 'infrared'
-        //         },
-        //         id: 'infrared'
-        //     },
-        //     {
-        //         match: {
-        //             id: 'noInfrared'
-        //         },
-        //         id: 'default'
-        //     },
-        //     {
-        //         match: {
-        //             id: 'jack'
-        //         },
-        //         id: 'default'
-        //     }
-        // ]}
+
         animate={true}
         motionStiffness={90}
         motionDamping={15}

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ArktiPhonesDatabaseUploader;
 using Microsoft.AspNetCore.Mvc;
@@ -174,9 +175,38 @@ namespace ArktiPhonesWebApp.Controllers {
             .Select (ph => new {
               RamInMB = ph.Key,
                 PhonesAmount = ph.Select (d => d.Memory.RandomAccess).Count (),
-                Phones = ph.Select (d => d.Name)
+                 Phones = ph.Select (d => new { Name = d.Name, Brand = d.Brand, RAM = d.Memory.RandomAccess })
             })
         })
+        .ToList ();
+      return data;
+    }
+
+    [HttpGet ("[action]")]
+    public object PhonesRamDetails (int year, string ramAmount, string selectedBrandsIds = "") {
+      if (year < 1900)
+        return new List<string> ();
+      var allDevices = _repo.GetDevices ()
+        .Where (p => p.Status.ReleasedDate.Year != null &&
+          p.Status.ReleasedDate.Year == year);
+
+      if (!string.IsNullOrWhiteSpace (selectedBrandsIds)) {
+        var brandsIds = selectedBrandsIds
+          .Split (',')
+          .Select (id => int.Parse (id));
+        var brands = Constants.Brands
+          .Where (b => brandsIds.Contains (b.ID))
+          .Select (b => b.Name);
+        var filteredDevices = allDevices.Where (d => brands.Contains (d.Brand));
+        allDevices = filteredDevices;
+      }
+      var regex = Regex.Match (ramAmount, @"^(\d+)GB");
+      var size = regex.Success?regex.Groups[1].Value: "";
+      var sizeNumber = int.TryParse (size, out int result) ? result * 1024 : 0;
+      var data = allDevices
+        .Where (p => p.Memory.RandomAccess.HasValue && (size == "" ? p.Memory.RandomAccess < 1000 : p.Memory.RandomAccess == sizeNumber))
+        .Select(p => new { Name = p.Name, Brand = p.Brand, RAM = p.Memory.RandomAccess })
+        .OrderBy(p => p.Brand).ThenBy(p => p.RAM)
         .ToList ();
       return data;
     }
