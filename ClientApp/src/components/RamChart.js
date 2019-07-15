@@ -17,18 +17,9 @@ export class RamChart extends Component {
   }
 
   componentDidMount() {
-    let query = 'api/PhonesData/Brands';
-    //console.log(query);
-    fetch(query)
-      .then(response => response.json())
-      .then(brands => {
-        this.setState({ brands: brands.map(brand => ({ label: brand.name+" ["+brand.numberOfDevices+"]", value: brand.id })) })
-        //console.log("result from brands");
-        //console.log(brands);
-      });
     this.fetchData();
-
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (JSON.stringify(prevState.selectedBrands.map(b => b.value)) !== JSON.stringify(this.state.selectedBrands.map(b => b.value))) {
       //console.log("componentWillUpdate event occured");
@@ -49,6 +40,7 @@ export class RamChart extends Component {
     fetch(query)
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         let formatedData = data.map(y => {
           let result = Object.assign({}, { year: y.year }, y.memory.reduce((reduced, next) => {
             let keys = Object.keys(next);
@@ -59,7 +51,7 @@ export class RamChart extends Component {
         });
         this.setState({ phones: formatedData, loading: false });
         //console.log("result from phonesWithJack");
-        //console.log(formatedData);
+        console.log(formatedData);
       });
   }
 
@@ -106,7 +98,7 @@ export class RamChart extends Component {
           onChange={this.handleSelectingBrands}
           closeMenuOnSelect={false}
           name="colors"
-          options={this.state.brands}
+          options={this.props.brands}
           className="basic-multi-select"
           classNamePrefix="select"
         />

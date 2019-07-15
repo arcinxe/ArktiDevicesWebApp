@@ -18,17 +18,6 @@ export class MiniJackChart extends Component {
   }
 
   componentDidMount() {
-    let query = 'api/PhonesData/Brands';
-    console.log(query);
-    fetch(query)
-      .then(response => response.json())
-      .then(brands => {
-        this.setState({ brands: brands.map(brand => ({ label: brand.name+" ["+brand.numberOfDevices+"]", value: brand.id })) })
-        console.log("result from brands");
-        console.log(brands);
-
-
-      });
     this.fetchData();
 
   }
@@ -137,7 +126,7 @@ export class MiniJackChart extends Component {
           onChange={this.handleSelectingBrands}
           closeMenuOnSelect={false}
           name="colors"
-          options={this.state.brands}
+          options={this.props.brands}
           className="basic-multi-select"
           classNamePrefix="select"
         />

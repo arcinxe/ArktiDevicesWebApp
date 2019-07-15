@@ -174,8 +174,7 @@ namespace ArktiPhonesWebApp.Controllers {
             .GroupBy (ph => ph.Memory.RandomAccess > 1000 ? $"{ph.Memory.RandomAccess/1024}GB" : $"<1GB")
             .Select (ph => new {
               RamInMB = ph.Key,
-                PhonesAmount = ph.Select (d => d.Memory.RandomAccess).Count (),
-                 Phones = ph.Select (d => new { Name = d.Name, Brand = d.Brand, RAM = d.Memory.RandomAccess })
+                PhonesAmount = ph.Select (d => d.Memory.RandomAccess).Count ()
             })
         })
         .ToList ();
