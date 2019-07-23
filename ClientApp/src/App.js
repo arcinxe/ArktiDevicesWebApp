@@ -9,6 +9,7 @@ import { Phones } from './components/Phones';
 import { MiniJackChart } from './components/MiniJackChart';
 import { InfraredChart } from './components/InfraredChart';
 import { RamChart } from './components/RamChart';
+import { UniversalChart } from './components/UniversalChart';
 
 
 export default class App extends Component {
@@ -22,12 +23,14 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    let query = 'api/PhonesData/Brands';
+    let query = 'api/PhonesData/GroupedBrands';
     console.log(query);
     fetch(query)
       .then(response => response.json())
       .then(brands => {
-        this.setState({ brands: brands.map(brand => ({ label: brand.name + " [" + brand.numberOfDevices + "]", value: brand.id })) })
+        var resultBrands = brands.map((b, index) => ({ label : index==0?'Popular':'Rest', options: b.map(brand => ({ label: brand.name + " [" + brand.numberOfDevices + "]", value: brand.id })) }))
+        this.setState({ brands: resultBrands});
+        // this.setState({ brands: brands.map(brand => ({ label: brand.name + " [" + brand.numberOfDevices + "]", value: brand.id })) })
         console.log("result from brands");
         console.log(brands);
       });
@@ -45,14 +48,17 @@ export default class App extends Component {
           path='/devices'
           render={(routeProps) => <Phones {...routeProps} brands={this.state.brands} />}
         />
-        <Route path='/minijack'  
+        <Route path='/minijack'
           render={(routeProps) => <MiniJackChart {...routeProps} brands={this.state.brands} />}
         />
         <Route path='/infrared'
           render={(routeProps) => <InfraredChart {...routeProps} brands={this.state.brands} />}
         />
-        <Route path='/ram' 
+        <Route path='/ram'
           render={(routeProps) => <RamChart {...routeProps} brands={this.state.brands} />}
+        />
+        <Route path='/charts'
+          render={(routeProps) => <UniversalChart {...routeProps} brands={this.state.brands} />}
         />
       </Layout>
     );
