@@ -22,7 +22,7 @@ export class RamChart extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (JSON.stringify(prevState.selectedBrands.map(b => b.value)) !== JSON.stringify(this.state.selectedBrands.map(b => b.value))) {
-      //console.log("componentWillUpdate event occured");
+      // console.log("componentWillUpdate event occurred");
       //console.log(this.state.selectedBrands.map(b => b.label + " " + b.value));
       this.fetchData();
     }

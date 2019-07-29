@@ -1,5 +1,6 @@
 using System;
 using ArktiPhonesDatabaseUploader.Models;
+using EntityFrameworkCore.Cacheable;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
@@ -34,6 +35,7 @@ public class DeviceContext : DbContext {
     protected override void OnConfiguring (DbContextOptionsBuilder optionsBuilder) {
         optionsBuilder
             .UseLazyLoadingProxies (true)
+            .UseSecondLevelCache()
             // .UseSqlServer(@"server=localhost;database=ArktiPhones;User ID=sa;password=Qwertyui0;");
             // .UseOracle (@"User Id=C##arktin;Password=Qwertyui0;Data Source=localhost:1521/orcl");
             .UseSqlite ("Data Source=ArktiPhones.db");

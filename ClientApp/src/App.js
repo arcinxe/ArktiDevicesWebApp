@@ -18,21 +18,30 @@ export default class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { brands: [] };
+    let deviceTypes = [['Smartphones', 's'], ['Smartwatches', 'w'], ['Tablets', 't'], ['Cell phones', 'p']]
+    .map(type => ({ label: type[0], value: type[1] }));
+    this.state = { brands: [], deviceTypes: deviceTypes };
 
   }
 
   componentDidMount() {
-    let query = 'api/PhonesData/GroupedBrands';
+    let deviceTypes = [['Smartphones', 's'], ['Smartwatches', 'w'], ['Tablets', 't'], ['Cell phones', 'p']]
+      .map(type => ({ label: type[0], value: type[1] }));
+    let query = 'api/DevicesData/GroupedBrands';
     console.log(query);
     fetch(query)
       .then(response => response.json())
       .then(brands => {
-        var resultBrands = brands.map((b, index) => ({ label : index==0?'Popular':'Rest', options: b.map(brand => ({ label: brand.name + " [" + brand.numberOfDevices + "]", value: brand.id })) }))
-        this.setState({ brands: resultBrands});
+        var resultBrands = brands
+          .map((b, index) => ({
+            label: index == 0 ? 'Popular' : 'Rest', options: b
+              .map(brand => ({ label: brand.name + " [" + brand.numberOfDevices + "]", value: brand.id }))
+          }))
+        this.setState({ brands: resultBrands });
         // this.setState({ brands: brands.map(brand => ({ label: brand.name + " [" + brand.numberOfDevices + "]", value: brand.id })) })
         console.log("result from brands");
         console.log(brands);
+        console.log(deviceTypes);
       });
 
   }
@@ -46,19 +55,19 @@ export default class App extends Component {
         <Route path='/fetch-data' component={FetchData} />
         <Route
           path='/devices'
-          render={(routeProps) => <Phones {...routeProps} brands={this.state.brands} />}
+          render={(routeProps) => <Phones {...routeProps} devices={this.state.deviceTypes} brands={this.state.brands} />}
         />
         <Route path='/minijack'
-          render={(routeProps) => <MiniJackChart {...routeProps} brands={this.state.brands} />}
+          render={(routeProps) => <MiniJackChart {...routeProps} devices={this.state.deviceTypes} brands={this.state.brands} />}
         />
         <Route path='/infrared'
-          render={(routeProps) => <InfraredChart {...routeProps} brands={this.state.brands} />}
+          render={(routeProps) => <InfraredChart {...routeProps} devices={this.state.deviceTypes} brands={this.state.brands} />}
         />
         <Route path='/ram'
-          render={(routeProps) => <RamChart {...routeProps} brands={this.state.brands} />}
+          render={(routeProps) => <RamChart {...routeProps} devices={this.state.deviceTypes} brands={this.state.brands} />}
         />
         <Route path='/charts'
-          render={(routeProps) => <UniversalChart {...routeProps} brands={this.state.brands} />}
+          render={(routeProps) => <UniversalChart {...routeProps} devices={this.state.deviceTypes} brands={this.state.brands} />}
         />
       </Layout>
     );
