@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ArktiPhonesDatabaseUploader.Models {
+namespace ArktiDevicesDatabaseUploader.Models {
 
     // Used to work with SQL databases
     public class WlanStandard {

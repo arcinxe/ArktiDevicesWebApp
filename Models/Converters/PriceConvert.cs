@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class PriceConvert : IConverter<Price, PriceDefault> {
     public PriceDefault Convert(Price sourceObject) {
         var result = new PriceDefault() {

@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class BuildConvert : IConverter<Build, BuildDefault> {
     public BuildDefault Convert(Build sourceObject) {
         var result = new BuildDefault() {

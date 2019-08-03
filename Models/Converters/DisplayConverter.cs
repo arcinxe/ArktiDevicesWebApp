@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class DisplayConvert : IConverter<Display, DisplayDefault> {
     public DisplayDefault Convert(Display sourceObject) {
         var result = new DisplayDefault() {

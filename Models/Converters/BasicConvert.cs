@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class BasicConvert : IConverter<Basic, BasicDefault> {
     public BasicDefault Convert(Basic sourceObject) {
         var result = new BasicDefault() {

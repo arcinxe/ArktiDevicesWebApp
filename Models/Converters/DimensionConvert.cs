@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class DimensionConvert : IConverter<Dimension, DimensionDefault> {
     public DimensionDefault Convert (Dimension sourceObject) {
         var result = new DimensionDefault () {

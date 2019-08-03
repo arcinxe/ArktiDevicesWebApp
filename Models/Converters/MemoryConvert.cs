@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class MemoryConvert : IConverter<Memory, MemoryDefault> {
     public MemoryDefault Convert(Memory sourceObject) {
         var result = new MemoryDefault() {

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace ArktiPhonesWebApp {
+namespace ArktiDevicesWebApp {
     public class Startup {
         public Startup (IConfiguration configuration) {
             Configuration = configuration;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class CameraInfoConvert : IConverter<CameraInfo, CameraInfoDefault> {
     public CameraInfoDefault Convert(CameraInfo sourceObject) {
         var result = new CameraInfoDefault() {

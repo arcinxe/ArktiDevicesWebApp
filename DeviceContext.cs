@@ -1,5 +1,5 @@
 using System;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 using EntityFrameworkCore.Cacheable;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
@@ -17,7 +17,7 @@ public class DeviceContext : DbContext {
     public DbSet<CameraInfo> CameraInfos { get; set; }
     public DbSet<Memory> Memories { get; set; }
     public DbSet<Price> Prices { get; set; }
-    public DbSet<ArktiPhonesDatabaseUploader.Models.OperatingSystem> OperatingSystems { get; set; }
+    public DbSet<ArktiDevicesDatabaseUploader.Models.OperatingSystem> OperatingSystems { get; set; }
     public DbSet<Cpu> Cpus { get; set; }
     public DbSet<Gpu> Gpus { get; set; }
 
@@ -38,7 +38,7 @@ public class DeviceContext : DbContext {
             .UseSecondLevelCache()
             // .UseSqlServer(@"server=localhost;database=ArktiPhones;User ID=sa;password=Qwertyui0;");
             // .UseOracle (@"User Id=C##arktin;Password=Qwertyui0;Data Source=localhost:1521/orcl");
-            .UseSqlite ("Data Source=ArktiPhones.db");
+            .UseSqlite ("Data Source=ArktiDevices.db");
             // .UseMySql("Server=remotemysql.com;Database=BIbIrfTkeG;User=BIbIrfTkeG;Password=dZ24h8JDwg;port=3306", // replace with your Connection String
             //         mySqlOptions =>
             //         {

@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class GpuConvert : IConverter<Gpu, GpuDefault> {
     public GpuDefault Convert(Gpu sourceObject) {
         var result = new GpuDefault() {

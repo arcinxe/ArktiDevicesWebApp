@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
-using ArktiPhonesWebApp;
+using ArktiDevicesDatabaseUploader.Models;
+using ArktiDevicesWebApp;
 
 public class DevicesFilter {
     private IQueryable<DeviceDetail> _devices;

@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class DeviceDetailConvert : IConverter<DeviceDetail, DeviceDetailDefault> {
     public DeviceDetailDefault Convert(DeviceDetail sourceObject) {
         var result = new DeviceDetailDefault();

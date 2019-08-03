@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class VideoModeConvert : IConverter<VideoMode, VideoModeDefault> {
     public VideoModeDefault Convert(VideoMode sourceObject) {
         var result = new VideoModeDefault() {

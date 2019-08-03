@@ -1,6 +1,6 @@
 {
-  "short_name": "ArktiPhonesWebApp",
-  "name": "ArktiPhonesWebApp",
+  "short_name": "ArktiDevicesWebApp",
+  "name": "ArktiDevicesWebApp",
   "icons": [
     {
       "src": "favicon.ico",

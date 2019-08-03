@@ -4,11 +4,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using ArktiPhonesDatabaseUploader;
+using ArktiDevicesDatabaseUploader;
 using EntityFrameworkCore.Cacheable;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ArktiPhonesWebApp.Controllers {
+namespace ArktiDevicesWebApp.Controllers {
   [Route("api/[controller]")]
   public class DevicesDataController : Controller {
     IDeviceRepository _repo = new SqlDbRepository();
@@ -20,7 +20,7 @@ namespace ArktiPhonesWebApp.Controllers {
     }
 
     [HttpGet("[action]")]
-    public IEnumerable<ArktiPhonesDatabaseUploader.Models.DeviceDetail> DeviceDetails() {
+    public IEnumerable<ArktiDevicesDatabaseUploader.Models.DeviceDetail> DeviceDetails() {
       var devices = _repo.GetDevices().Take(10).ToList();
       //   var results = devices.Select(d => new DeviceDetailConvert().Convert(d)).ToList();
       return devices;
@@ -126,7 +126,7 @@ namespace ArktiPhonesWebApp.Controllers {
             Tablets = p.Where(ph => ph.Basic.DeviceType == "tablet").Count(),
             Cellphones = p.Where(ph => ph.Basic.DeviceType == "phone").Count(),
         }).ToList();
-      return new { Data = data, Keys = new List<string>() { "smartphones", "smartwatches", "tablets", "cellphones" } };
+      return new { Data = data, Keys = new List<string>() { "smartphones", "cellphones", "tablets", "smartwatches", } };
     }
 
     [HttpGet("[action]")]

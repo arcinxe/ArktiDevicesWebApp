@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class GpsFeatureConvert : IConverter<GpsFeature, GpsFeatureDefault> {
     public GpsFeatureDefault Convert(GpsFeature sourceObject) {
         var result = new GpsFeatureDefault() {

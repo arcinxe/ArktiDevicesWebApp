@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 using Microsoft.Extensions.Configuration;
-namespace ArktiPhonesDatabaseUploader {
+namespace ArktiDevicesDatabaseUploader {
     public class SqlDbRepository : IDeviceRepository {
         private readonly DeviceContext _db;
 

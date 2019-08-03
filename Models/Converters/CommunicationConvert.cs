@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class CommunicationConvert : IConverter<Communication, CommunicationDefault> {
     public CommunicationDefault Convert(Communication sourceObject) {
         var result = new CommunicationDefault() {

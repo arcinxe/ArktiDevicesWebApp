@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class CpuConvert : IConverter<Cpu, CpuDefault> {
     public CpuDefault Convert(Cpu sourceObject) {
         var result = new CpuDefault() {

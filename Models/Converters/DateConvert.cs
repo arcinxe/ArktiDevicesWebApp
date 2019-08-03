@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class DateConvert : IConverter<Date, DateDefault> {
     public DateDefault Convert(Date sourceObject) {
         var result = new DateDefault() {

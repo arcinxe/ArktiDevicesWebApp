@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class UsbFeatureConvert : IConverter<UsbFeature, UsbFeatureDefault> {
     public UsbFeatureDefault Convert(UsbFeature sourceObject) {
         var result = new UsbFeatureDefault() {

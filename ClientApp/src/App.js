@@ -7,8 +7,8 @@ import { Counter } from './components/Counter';
 import { Phones } from './components/Phones';
 // import { TestPage } from './components/TestPage';
 import { MiniJackChart } from './components/MiniJackChart';
-import { InfraredChart } from './components/InfraredChart';
-import { RamChart } from './components/RamChart';
+// import { InfraredChart } from './components/InfraredChart';
+// import { RamChart } from './components/RamChart';
 import { UniversalChart } from './components/UniversalChart';
 
 

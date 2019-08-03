@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class OperatingSystemConvert : IConverter<OperatingSystem, OperatingSystemDefault> {
     public OperatingSystemDefault Convert(OperatingSystem sourceObject) {
         var result = new OperatingSystemDefault() {

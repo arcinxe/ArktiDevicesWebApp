@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
-namespace ArktiPhonesDatabaseUploader
+using ArktiDevicesDatabaseUploader.Models;
+namespace ArktiDevicesDatabaseUploader
 {
     interface IDeviceRepository
     {

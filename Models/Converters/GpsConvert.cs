@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class GpsConvert : IConverter<Gps, GpsDefault> {
     public GpsDefault Convert(Gps sourceObject) {
         var result = new GpsDefault() {

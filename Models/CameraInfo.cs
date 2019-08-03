@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ArktiPhonesDatabaseUploader.Models {
+namespace ArktiDevicesDatabaseUploader.Models {
 
     // Used to work with SQL databases
     public class CameraInfo {

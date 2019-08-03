@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class DeviceColorConvert : IConverter<DeviceColor, DeviceColorDefault> {
     public DeviceColorDefault Convert (DeviceColor sourceObject) {
         var result = new DeviceColorDefault () {

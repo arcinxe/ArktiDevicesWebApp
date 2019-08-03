@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class MaterialConvert : IConverter<Material, MaterialDefault> {
     public MaterialDefault Convert (Material sourceObject) {
         var result = new MaterialDefault () {

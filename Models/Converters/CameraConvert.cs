@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class CameraConvert : IConverter<Camera, CameraDefault> {
     public CameraDefault Convert(Camera sourceObject) {
         var result = new CameraDefault() {

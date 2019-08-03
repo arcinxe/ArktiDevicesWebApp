@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class BatteryConvert : IConverter<Battery, BatteryDefault> {
     public BatteryDefault Convert(Battery sourceObject) {
         var result = new BatteryDefault() {

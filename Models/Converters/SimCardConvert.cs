@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class SimCardConvert : IConverter<SimCard, SimCardDefault> {
     public SimCardDefault Convert(SimCard sourceObject) {
         var result = new SimCardDefault() {

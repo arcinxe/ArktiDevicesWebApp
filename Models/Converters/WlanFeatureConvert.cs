@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class WlanFeatureConvert : IConverter<WlanFeature, WlanFeatureDefault> {
     public WlanFeatureDefault Convert(WlanFeature sourceObject) {
         var result = new WlanFeatureDefault() {

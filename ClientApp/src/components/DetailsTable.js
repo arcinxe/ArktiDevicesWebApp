@@ -85,6 +85,7 @@ export default class DetailsTable extends Component {
             {
               Header: this.formatColumnName(this.props.chartType),
               accessor: "specificValue",
+              show: this.props.chartType!=="Types",
               Cell: (row) => {
                 return <div className="specific-value-div" style={{ textAlign: "center" }}>
                   {this.formatData(row.original.specificValue)}

@@ -2,7 +2,7 @@ using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ArktiPhonesDatabaseUploader.Models {
+namespace ArktiDevicesDatabaseUploader.Models {
 
     // Used to work with SQL databases
     public class DeviceDetail {

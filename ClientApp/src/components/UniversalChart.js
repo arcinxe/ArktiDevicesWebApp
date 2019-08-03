@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MyResponsiveBarTest from './MyResponsiveBarTest';
+// import colorThemes from './Colors';
 import DetailsTable from './DetailsTable';
 import { Spinner } from 'reactstrap';
 import Select from 'react-select';
@@ -21,7 +22,7 @@ export class UniversalChart extends Component {
       selectedBrands: [],
       selectedDevicesDetails: [],
       selectedBar: {},
-      selectedChartType: { label: "RAM", value: "Ram" }
+      selectedChartType: { label: "Device types", value: "Types" }
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -43,9 +44,10 @@ export class UniversalChart extends Component {
     }
     if (JSON.stringify(prevState.selectedDeviceTypes.map(b => b.value)) !== JSON.stringify(this.state.selectedDeviceTypes.map(b => b.value)))
       this.fetchData();
-    if (prevState.selectedChartType.value !== this.state.selectedChartType.value){
-      this.setState({selectedDevicesDetails:[]});
-      this.fetchData()}
+    if (prevState.selectedChartType.value !== this.state.selectedChartType.value) {
+      this.setState({ selectedDevicesDetails: [] });
+      this.fetchData()
+    }
   }
 
   fetchData() {
@@ -76,7 +78,6 @@ export class UniversalChart extends Component {
           });
         }
         this.setState({ devices: formatedData, loading: false, keys: data.keys });
-        //console.log("result from phonesWithJack");
         console.log(formatedData);
       });
   }
@@ -92,15 +93,13 @@ export class UniversalChart extends Component {
     this.setState({ selectedDeviceTypes: selectedDeviceTypes });
   }
   handleSelectingChartType(selectedChartType) {
-    console.log("selectedChartType");
-    console.log(selectedChartType);
+    // console.log("selectedChartType");
+    // console.log(selectedChartType);
     this.setState({ selectedChartType: selectedChartType });
   }
 
   handleBarClick(...theArgs) {
-    //console.log("clicked on the bar")
     var event = theArgs[0];
-    //console.log(event);
     let brandsIds = this.state.selectedBrands.map(b => b.value).join();
     let deviceTypesAbbreviations = this.state.selectedDeviceTypes.map(b => b.value).join('');
     let query = 'api/DevicesData/' + this.state.selectedChartType.value + 'Details?year=' + event.indexValue + '&value=' + event.id + '&selectedBrandsIds=' + brandsIds + '&deviceTypes=' + deviceTypesAbbreviations;
@@ -108,28 +107,18 @@ export class UniversalChart extends Component {
     fetch(query)
       .then(response => response.json())
       .then(data => {
-        //console.log("setting state to this");
         console.log(data);
         this.setState({ selectedDevicesDetails: data });
       });
   }
   render() {
-    // let keys = ["<1GB", "1GB", "2GB", "3GB", "4GB", "6GB", "8GB", "10GB", "12GB"];
     let indexBy = "year";
     let labelTextColor = "#000";
-    // let colors = { scheme: 'category10' };
-    // let colors = ['#0091B2', '#00E0B6', '#00DB5F', '#00D60D', '#42D200', '#8DCD00', '#C8BB00', '#C36D00', '#BF2200',];
-    // let colors =[ '#240041', '#480544', '#6D0B47', '#B5154D', '#A3124C', '#DA2B52', '#FF4057', '#FF615C', '#ff8260',];
-    // let colors =[ '#0A2F51', '#0D4761', '#116270', '#147E7B', '', '#48B16D', '#74C67A', '#ADDAA1', '#DEEDCF',];
-    // let colors =[ 'rgb(128, 0, 38)', 'rgb(189, 0, 38)','rgb(227, 26, 28)', 'rgb(252, 78, 42)','rgb(253, 141, 60)'];
-    console.log("shit");
-    console.log(this.props.charts);
-    console.log(this.state.selectedChartType.value);
-    console.log(this.props.charts.filter(c => c.path===this.state.selectedChartType.value)[0]);
 
     let contents = this.state.loading
       ? <div><h1>Loading...</h1> <Spinner color="info" /> </div>
-      : <MyResponsiveBarTest data={this.state.devices} keys={this.state.keys} indexBy={indexBy} onClick={this.handleBarClick} colors={this.props.charts.filter(c => c.path===this.state.selectedChartType.value)[0].colors} labelTextColor={labelTextColor} itemsSpacing={30}></MyResponsiveBarTest>
+      : <MyResponsiveBarTest data={this.state.devices} keys={this.state.keys} indexBy={indexBy} onClick={this.handleBarClick}
+        labelTextColor={labelTextColor} itemsSpacing={30} name={this.state.selectedChartType.value}></MyResponsiveBarTest>
 
     return (
       <div>
@@ -158,7 +147,7 @@ export class UniversalChart extends Component {
         />
         <Select
           placeholder={"Select chart type..."}
-          defaultValue={{ label: "RAM", value: "Ram" }}
+          defaultValue={{ label: "Device types", value: "Types" }}
           onChange={this.handleSelectingChartType}
           name="colors"
           options={this.props.charts.map(c => ({ label: c.name, value: c.path }))}

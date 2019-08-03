@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/ArktiPhonesWebApp.csproj"
+                "${workspaceFolder}/ArktiDevicesWebApp.csproj"
             ],
             "problemMatcher": "$tsc"
         },
@@ -17,7 +17,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/ArktiPhonesWebApp.csproj"
+                "${workspaceFolder}/ArktiDevicesWebApp.csproj"
             ],
             "problemMatcher": "$tsc"
         },
@@ -28,7 +28,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/ArktiPhonesWebApp.csproj"
+                "${workspaceFolder}/ArktiDevicesWebApp.csproj"
             ],
             "problemMatcher": "$tsc"
         }

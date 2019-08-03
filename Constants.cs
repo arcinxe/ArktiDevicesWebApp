@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ArktiPhonesWebApp {
+namespace ArktiDevicesWebApp {
     public static class Constants {
         public static List<Brand> Brands;
         public static List<List<Brand>> GroupedBrands = new List<List<Brand>>();
@@ -55,7 +55,9 @@ namespace ArktiPhonesWebApp {
             ColorThemes.Add("10", new List<string> { "#ff5500", "#6aff00", "#248fb3", "#d900b5", "#bf8613", "#009933", "#3399ff", "#f20051", "#b1bf13", "#49f2e4", "#2b3ad9" });
             ColorThemes.Add("4", new List<string> { "#cc553d", "#62b312", "#4dd2ff", "#701f99" });
             ColorThemes.Add("twilight", new List<string> { "#240041", "#480544", "#6D0B47", "#B5154D", "#A3124C", "#DA2B52", "#FF4057", "#FF615C", "#ff8260" });
-            ColorThemes.Add("twilight4", new List<string> { "#FF8260", "#FF4057", "#DA2B52", "#6D0B47" });
+            // ColorThemes.Add("twilight4", new List<string> { "#FF8260", "#FF4057", "#480544", "#6D0B47" });
+            // ColorThemes.Add("twilight4", new List<string> { "#A3124C", "#FF6B61", "#FF4057", "#D12952" });
+            ColorThemes.Add("twilight4", new List<string> { "#A3124C", "#D12952", "#FF615C", "#FF987C" });
             ChartTypes.Add(new ChartType() { Name = "RAM", Path = "Ram", Colors = ColorThemes["RAM"] });
             ChartTypes.Add(new ChartType() { Name = "Infrared", Path = "Infrared", Colors = ColorThemes["2inverted"] });
             ChartTypes.Add(new ChartType() { Name = "Mini jack", Path = "MiniJack", Colors = ColorThemes["2"] });

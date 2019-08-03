@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class StatusConvert : IConverter<Status, StatusDefault> {
     public StatusDefault Convert(Status sourceObject) {
         var result = new StatusDefault() {

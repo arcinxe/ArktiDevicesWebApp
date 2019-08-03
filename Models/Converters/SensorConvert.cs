@@ -1,5 +1,5 @@
 using System.Linq;
-using ArktiPhonesDatabaseUploader.Models;
+using ArktiDevicesDatabaseUploader.Models;
 public class SensorConvert : IConverter<Sensor, SensorDefault> {
     public SensorDefault Convert(Sensor sourceObject) {
         var result = new SensorDefault() {
