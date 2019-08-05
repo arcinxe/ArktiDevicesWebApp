@@ -61,7 +61,7 @@ const MyResponsiveBarTest = ({ data, keys, indexBy, onClick, labelTextColor, nam
                     }
                 ]
             }
-        ]} animate={true} motionStiffness={90} motionDamping={15} onClick={onClick} />);
+        ]} animate={true} motionStiffness={90} motionDamping={15} onClick={onClick} groupMode="stacked" />);
 }
 
 

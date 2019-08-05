@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.3.1",
     "@mdi/font": "^3.8.95",
     "@mdi/js": "^3.8.95",
     "@mdi/react": "^1.2.1",

@@ -36,7 +36,8 @@ public class DevicesFilter {
             var deviceTypes = types.Where(k => _deviceTypesAbbr.ContainsKey(k)).Select(k => _deviceTypesAbbr[k]);
             var filteredDevices = allDevices.Where(d => deviceTypes.Contains(d.Basic.DeviceType));
             allDevices = filteredDevices;
-        }
+        } else
+            return new List<DeviceDetail>().AsQueryable();
 
         return allDevices;
     }

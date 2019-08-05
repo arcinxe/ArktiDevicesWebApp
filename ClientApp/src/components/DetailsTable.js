@@ -94,8 +94,9 @@ export default class DetailsTable extends Component {
             }
           ]}
           defaultPageSize={100}
-          minRows={2}
+          minRows={4}
           className="-striped -highlight"
+          noDataText="Click on the chart to show its details!"
         />
       </div>
     )

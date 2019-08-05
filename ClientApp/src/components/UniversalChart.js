@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import MyResponsiveBarTest from './MyResponsiveBarTest';
 // import colorThemes from './Colors';
 import DetailsTable from './DetailsTable';
+import DeviceTypeButtons from './DeviceTypeButtons';
 import { Spinner } from 'reactstrap';
 import Select from 'react-select';
 // import Icon from '@mdi/react';
@@ -18,7 +19,7 @@ export class UniversalChart extends Component {
       brands: [],
       keys: [],
       loading: true,
-      selectedDeviceTypes: [],
+      selectedDeviceTypes: ['s','w','t','p'],
       selectedBrands: [],
       selectedDevicesDetails: [],
       selectedBar: {},
@@ -42,7 +43,7 @@ export class UniversalChart extends Component {
       //console.log(this.state.selectedBrands.map(b => b.label + " " + b.value));
       this.fetchData();
     }
-    if (JSON.stringify(prevState.selectedDeviceTypes.map(b => b.value)) !== JSON.stringify(this.state.selectedDeviceTypes.map(b => b.value)))
+    if (JSON.stringify(prevState.selectedDeviceTypes) !== JSON.stringify(this.state.selectedDeviceTypes))
       this.fetchData();
     if (prevState.selectedChartType.value !== this.state.selectedChartType.value) {
       this.setState({ selectedDevicesDetails: [] });
@@ -56,7 +57,7 @@ export class UniversalChart extends Component {
 
     let brandsIds = this.state.selectedBrands.map(b => b.value).join();
     brandsIds = brandsIds === "" ? 0 : brandsIds;
-    let deviceTypesAbbreviations = this.state.selectedDeviceTypes.map(b => b.value).join('');
+    let deviceTypesAbbreviations = this.state.selectedDeviceTypes.join('');
     //console.log(brandsIds);
     let query = 'api/DevicesData/' + this.state.selectedChartType.value + '?selectedBrandsIds=' + brandsIds + '&deviceTypes=' + deviceTypesAbbreviations;
     console.log(query);
@@ -87,21 +88,22 @@ export class UniversalChart extends Component {
     //console.log(selectedBrands.map(b => b.label + " " + b.value));
     this.setState({ selectedBrands: selectedBrands });
   }
-  handleSelectingDeviceTypes(selectedDeviceTypes) {
-    // console.log("selectedDeviceTypes");
-    // console.log(selectedDeviceTypes.map(b => b.label + " " + b.value));
-    this.setState({ selectedDeviceTypes: selectedDeviceTypes });
-  }
   handleSelectingChartType(selectedChartType) {
     // console.log("selectedChartType");
     // console.log(selectedChartType);
     this.setState({ selectedChartType: selectedChartType });
   }
+  handleSelectingDeviceTypes(selectedDeviceTypes) {
+    // console.log("selectedDeviceTypes");
+    // console.log(selectedDeviceTypes.map(b => b.label + " " + b.value));
+    this.setState({ selectedDeviceTypes: selectedDeviceTypes });
+  }
+
 
   handleBarClick(...theArgs) {
     var event = theArgs[0];
     let brandsIds = this.state.selectedBrands.map(b => b.value).join();
-    let deviceTypesAbbreviations = this.state.selectedDeviceTypes.map(b => b.value).join('');
+    let deviceTypesAbbreviations = this.state.selectedDeviceTypes.join('');
     let query = 'api/DevicesData/' + this.state.selectedChartType.value + 'Details?year=' + event.indexValue + '&value=' + event.id + '&selectedBrandsIds=' + brandsIds + '&deviceTypes=' + deviceTypesAbbreviations;
     console.log(query);
     fetch(query)
@@ -113,16 +115,23 @@ export class UniversalChart extends Component {
   }
   render() {
     let indexBy = "year";
-    let labelTextColor = "#000";
+    let labelTextColor = "#191919";
 
     let contents = this.state.loading
       ? <div><h1>Loading...</h1> <Spinner color="info" /> </div>
       : <MyResponsiveBarTest data={this.state.devices} keys={this.state.keys} indexBy={indexBy} onClick={this.handleBarClick}
-        labelTextColor={labelTextColor} itemsSpacing={30} name={this.state.selectedChartType.value}></MyResponsiveBarTest>
+        labelTextColor={labelTextColor} itemsSpacing={30} name={this.state.selectedChartType.value} ></MyResponsiveBarTest>
 
     return (
       <div>
-
+        <Select
+          placeholder={"Select chart type..."}
+          defaultValue={{ label: "Device types", value: "Types" }}
+          onChange={this.handleSelectingChartType}
+          name="colors"
+          options={this.props.charts.map(c => ({ label: c.name, value: c.path }))}
+          classNamePrefix="select"
+        />
         <Select
           defaultValue={[]}
           isMulti
@@ -134,25 +143,8 @@ export class UniversalChart extends Component {
           className="basic-multi-select"
           classNamePrefix="select"
         />
-        <Select
-          defaultValue={[]}
-          isMulti
-          placeholder={"Filter device types..."}
-          onChange={this.handleSelectingDeviceTypes}
-          closeMenuOnSelect={false}
-          name="colors"
-          options={this.props.devices}
-          className="basic-multi-select"
-          classNamePrefix="select"
-        />
-        <Select
-          placeholder={"Select chart type..."}
-          defaultValue={{ label: "Device types", value: "Types" }}
-          onChange={this.handleSelectingChartType}
-          name="colors"
-          options={this.props.charts.map(c => ({ label: c.name, value: c.path }))}
-          classNamePrefix="select"
-        />
+        <DeviceTypeButtons 
+        onChange={this.handleSelectingDeviceTypes}/>
         <div style={{ height: 500 }}>
           {contents}
         </div>
