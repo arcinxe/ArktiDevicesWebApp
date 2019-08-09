@@ -18,16 +18,21 @@ export default class DetailsTable extends Component {
   }
   formatData(inputData) {
     let result = inputData;
-    switch (this.props.chartType) {
-      case "Ram":
-        result = inputData > 1000 ? inputData / 1024 + "GB" : inputData + "MB"
-        break;
-      default:
-        if (typeof inputData === "boolean")
-          result = inputData
-            ? <Icon path={mdiCheck} size={1} color="#00C853" />
-            : <Icon path={mdiClose} size={1} color="#D32F2F" />
-        break;
+    if ((typeof inputData !== typeof null)) {
+      switch (this.props.chartType) {
+        case "Ram":
+          result = inputData > 1000 ? inputData / 1024 + "GB" : inputData + "MB";
+          break;
+        case "ScreenDensity":
+          result = inputData + " ppi";
+          break;
+        default:
+          if (typeof inputData === "boolean")
+            result = inputData
+              ? <Icon path={mdiCheck} size={1} color="#00C853" />
+              : <Icon path={mdiClose} size={1} color="#D32F2F" />
+          break;
+      }
     }
 
     return result;
@@ -40,7 +45,10 @@ export default class DetailsTable extends Component {
         break;
       case "Types":
         name = "Type";
-        break
+        break;
+      case "ScreenDensity":
+        name = "Screen pixel density";
+        break;
       default:
         break;
     }
@@ -85,7 +93,7 @@ export default class DetailsTable extends Component {
             {
               Header: this.formatColumnName(this.props.chartType),
               accessor: "specificValue",
-              show: this.props.chartType!=="Types",
+              show: this.props.chartType !== "Types",
               Cell: (row) => {
                 return <div className="specific-value-div" style={{ textAlign: "center" }}>
                   {this.formatData(row.original.specificValue)}

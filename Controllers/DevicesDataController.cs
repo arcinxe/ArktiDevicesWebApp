@@ -59,27 +59,32 @@ namespace ArktiDevicesWebApp.Controllers {
 
       var data = allDevices
         .OrderByDescending(p => p.Status.ReleasedDate.Year)
+        .Where(p => p.Communication.AudioJack.HasValue)
         .GroupBy(p => p.Status.ReleasedDate.Year)
         .Select(p => new {
           Year = p.Key.ToString(),
-            Jack = p.Where(ph => ph.Communication.AudioJack.HasValue && ph.Communication.AudioJack.Value).Select(ph => ph.Communication.AudioJack.Value).Count(),
-            NoJack = p.Where(ph => ph.Communication.AudioJack == null || !ph.Communication.AudioJack.Value).Select(ph => ph.Communication.AudioJack).Count(),
-        }).ToList();
-      return new { Data = data, Keys = new List<string>() { "jack", "noJack" } };
+            Data = p
+            .GroupBy(ph => ph.Communication.AudioJack)
+            .Select(ph => new {
+              Type = ph.Key.Value? "audio jack": "no audio jack",
+                PhonesAmount = ph.Select(d => d.Basic.DeviceType).Count()
+            })
+        });
+      return new { Data = data, Keys = new List<string>() { "audio jack", "no audio jack" } };
     }
 
     [HttpGet("[action]")]
     public object MiniJackDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
       var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
-      var withJack = value.Equals("jack", StringComparison.OrdinalIgnoreCase);
-
+      if (!string.IsNullOrWhiteSpace(value)) {
+        var withJack = value.Equals("jack", StringComparison.OrdinalIgnoreCase);
+        allDevices = allDevices.Where(ph => ph.Communication.AudioJack.HasValue && (!withJack ^ ph.Communication.AudioJack.Value));
+      }
       var data = allDevices.Where(p => p.Status.ReleasedDate.Year == year)
-        .Where(ph => ph.Communication.AudioJack.HasValue && (!withJack ^ ph.Communication.AudioJack.Value))
         .OrderBy(ph => ph.Brand)
         .ThenBy(ph => ph.Name)
         .Select(ph => new { Name = ph.Name, Brand = ph.Brand, SpecificValue = ph.Communication.AudioJack, DeviceType = ph.Basic.DeviceType, Slug = ph.Basic.Slug })
         .ToList();
-      var results = new { Year = year, Jack = withJack, devices = data };
       return data;
     }
 
@@ -92,23 +97,28 @@ namespace ArktiDevicesWebApp.Controllers {
         .GroupBy(p => p.Status.ReleasedDate.Year)
         .Select(p => new {
           Year = p.Key.ToString(),
-            Infrared = p.Where(ph => ph.Communication.Infrared).Select(ph => ph.Communication.Infrared).Count(),
-            NoInfrared = p.Where(ph => !ph.Communication.Infrared).Select(ph => ph.Communication.Infrared).Count(),
-        }).ToList();
-      return new { Data = data, Keys = new List<string>() { "noInfrared", "infrared" } };
+            Data = p
+            .GroupBy(ph => ph.Communication.Infrared)
+            .Select(ph => new {
+              Type = ph.Key? "infrared": "no infrared",
+                PhonesAmount = ph.Select(d => d.Basic.DeviceType).Count()
+            })
+        });
+      return new { Data = data, Keys = new List<string>() { "no infrared", "infrared" } };
     }
 
     [HttpGet("[action]")]
     public object InfraredDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
       var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
-      var withInfrared = value.Equals("infrared", StringComparison.OrdinalIgnoreCase);
+      if (!string.IsNullOrWhiteSpace(value)) {
+        var withInfrared = value.Equals("infrared", StringComparison.OrdinalIgnoreCase);
+        allDevices = allDevices.Where(ph => !withInfrared ^ ph.Communication.Infrared);
+      }
       var data = allDevices.Where(p => p.Status.ReleasedDate.Year == year)
-        .Where(ph => !withInfrared ^ ph.Communication.Infrared)
         .OrderBy(ph => ph.Brand)
         .ThenBy(ph => ph.Name)
         .Select(ph => new { Name = ph.Name, Brand = ph.Brand, SpecificValue = ph.Communication.Infrared, DeviceType = ph.Basic.DeviceType, Slug = ph.Basic.Slug })
         .ToList();
-      var results = new { Year = year, Infrared = withInfrared, devices = data };
       return data;
     }
 
@@ -121,11 +131,13 @@ namespace ArktiDevicesWebApp.Controllers {
         .GroupBy(p => p.Status.ReleasedDate.Year)
         .Select(p => new {
           Year = p.Key.ToString(),
-            Smartphones = p.Where(ph => ph.Basic.DeviceType == "smartphone").Count(),
-            Smartwatches = p.Where(ph => ph.Basic.DeviceType == "smartwatch").Count(),
-            Tablets = p.Where(ph => ph.Basic.DeviceType == "tablet").Count(),
-            Cellphones = p.Where(ph => ph.Basic.DeviceType == "phone").Count(),
-        }).ToList();
+            Data = p
+            .GroupBy(ph => ph.Basic.DeviceType)
+            .Select(ph => new {
+              Type = ph.Key == "phone" ? "cellphones" : (ph.Key == "smartwatch" ? "smartwatches" : ph.Key + "s"),
+                PhonesAmount = ph.Select(d => d.Basic.DeviceType).Count()
+            })
+        });
       return new { Data = data, Keys = new List<string>() { "smartphones", "cellphones", "tablets", "smartwatches", } };
     }
 
@@ -133,22 +145,25 @@ namespace ArktiDevicesWebApp.Controllers {
     public object TypesDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
       var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
       var deviceType = value;
-      switch (value) {
-        case "smartphones":
-          deviceType = "smartphone";
-          break;
-        case "smartwatches":
-          deviceType = "smartwatch";
-          break;
-        case "cellphones":
-          deviceType = "phone";
-          break;
-        case "tablets":
-          deviceType = "tablet";
-          break;
+      if (!string.IsNullOrWhiteSpace(value)) {
+        switch (value) {
+          case "smartphones":
+            deviceType = "smartphone";
+            break;
+          case "smartwatches":
+            deviceType = "smartwatch";
+            break;
+          case "cellphones":
+            deviceType = "phone";
+            break;
+          case "tablets":
+            deviceType = "tablet";
+            break;
+        }
+
+        allDevices = allDevices.Where(ph => ph.Basic.DeviceType == deviceType);
       }
       var data = allDevices.Where(p => p.Status.ReleasedDate.Year == year)
-        .Where(ph => ph.Basic.DeviceType == deviceType)
         .OrderBy(ph => ph.Brand)
         .ThenBy(ph => ph.Name)
         .Select(ph => new { Name = ph.Name, Brand = ph.Brand, SpecificValue = ph.Basic.DeviceType, DeviceType = ph.Basic.DeviceType, Slug = ph.Basic.Slug })
@@ -166,7 +181,7 @@ namespace ArktiDevicesWebApp.Controllers {
         .GroupBy(p => p.Status.ReleasedDate.Year)
         .Select(p => new {
           Year = p.Key.ToString(),
-            Memory = p
+            Data = p
             .Where(ph => ph.Memory.RandomAccess.HasValue)
             .GroupBy(ph => ph.Memory.RandomAccess > 1000 ? $"{ph.Memory.RandomAccess/1024}GB" : $"<1GB")
             .Select(ph => new {
@@ -181,11 +196,13 @@ namespace ArktiDevicesWebApp.Controllers {
     [HttpGet("[action]")]
     public object RamDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
       var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
-      var regex = Regex.Match(value, @"^(\d+)GB");
-      var size = regex.Success?regex.Groups[1].Value: "";
-      var sizeNumber = int.TryParse(size, out int result) ? result * 1024 : 0;
+      if (!string.IsNullOrWhiteSpace(value)) {
+        var regex = Regex.Match(value, @"^(\d+)GB");
+        var size = regex.Success?regex.Groups[1].Value: "";
+        var sizeNumber = int.TryParse(size, out int result) ? result * 1024 : 0;
+        allDevices = allDevices.Where(p => p.Memory.RandomAccess.HasValue && (size == "" ? p.Memory.RandomAccess < 1000 : p.Memory.RandomAccess == sizeNumber));
+      }
       var data = allDevices
-        .Where(p => p.Memory.RandomAccess.HasValue && (size == "" ? p.Memory.RandomAccess < 1000 : p.Memory.RandomAccess == sizeNumber))
         .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Memory.RandomAccess, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
         .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
         .ToList();
@@ -201,27 +218,31 @@ namespace ArktiDevicesWebApp.Controllers {
         .GroupBy(p => p.Status.ReleasedDate.Year)
         .Select(p => new {
           Year = p.Key.ToString(),
-            ScreenDensity = p
+            Data = p
             .Where(ph => ph.Display.PixelDensity.HasValue)
-            .GroupBy(ph => ph.Memory.RandomAccess > 1000 ? $"{ph.Memory.RandomAccess/1024}GB" : $"<1GB")
+            .GroupBy(ph => (int) ph.Display.PixelDensity / 100)
             .Select(ph => new {
-              RamInMB = ph.Key,
-                PhonesAmount = ph.Select(d => d.Memory.RandomAccess).Count()
+              PixelsPerInchOver100 = ph.Key > 0 ? ph.Key.ToString() + "00 ppi" : "<100 ppi",
+                PhonesAmount = ph.Select(d => d.Memory.RandomAccess).Count(),
+                // Phones = ph.Select(d => d.Name)
             })
         })
         .Cacheable(TimeSpan.FromSeconds(60));
-      return data;
+      return new { Data = data, Keys = new List<string>() { "<100 ppi", "100 ppi", "200 ppi", "300 ppi", "400 ppi", "500 ppi", "600 ppi", "700 ppi", "800 ppi", "900 ppi", } };
     }
 
     [HttpGet("[action]")]
     public object ScreenDensityDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
       var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
-      var regex = Regex.Match(value, @"^(\d+)GB");
-      var size = regex.Success?regex.Groups[1].Value: "";
-      var sizeNumber = int.TryParse(size, out int result) ? result * 1024 : 0;
+      if (!string.IsNullOrWhiteSpace(value)) {
+        var least = value.Contains("<");
+
+        var density = least?0 : int.Parse(value.Remove(value.Length - 4, 4));
+        var upperDensity = density + 99;
+        allDevices = allDevices.Where(p => p.Display.PixelDensity.HasValue && p.Display.PixelDensity >= density && p.Display.PixelDensity < upperDensity);
+      }
       var data = allDevices
-        .Where(p => p.Memory.RandomAccess.HasValue && (size == "" ? p.Memory.RandomAccess < 1000 : p.Memory.RandomAccess == sizeNumber))
-        .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Memory.RandomAccess, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
+        .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Display.PixelDensity, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
         .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
         .ToList();
       return data;

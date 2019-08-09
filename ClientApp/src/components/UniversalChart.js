@@ -55,13 +55,16 @@ export class UniversalChart extends Component {
     brandsIds = brandsIds === "" ? 0 : brandsIds;
     let deviceTypesAbbreviations = this.state.selectedDeviceTypes.join('');
     let query = 'api/DevicesData/' + this.state.selectedChartType.value + '?selectedBrandsIds=' + brandsIds + '&deviceTypes=' + deviceTypesAbbreviations;
+    console.log(query);
     fetch(query)
       .then(response => response.json())
       .then(data => {
+        console.log(data);
         let formatedData = data.data;
-        if (this.state.selectedChartType.value === "Ram") {
+        if (true || this.state.selectedChartType.value === "Ram" || this.state.selectedChartType.value === "Types") {
+          console.log(this.state.selectedChartType.value);
           formatedData = data.data.map(y => {
-            let result = Object.assign({}, { year: y.year }, y.memory.reduce((reduced, next) => {
+            let result = Object.assign({}, { year: y.year }, y.data.reduce((reduced, next) => {
               let keys = Object.keys(next);
               reduced[next[keys[0]]] = next[keys[1]];
               return reduced;
@@ -86,10 +89,13 @@ export class UniversalChart extends Component {
 
 
   handleBarClick(...theArgs) {
+    console.log(theArgs)
+    var fullYear = (typeof theArgs[1] === "string" && theArgs[1].length === 4);
+    if (fullYear) console.log("FULL YEAR")
     var event = theArgs[0];
     let brandsIds = this.state.selectedBrands.map(b => b.value).join();
     let deviceTypesAbbreviations = this.state.selectedDeviceTypes.join('');
-    let query = 'api/DevicesData/' + this.state.selectedChartType.value + 'Details?year=' + event.indexValue + '&value=' + event.id + '&selectedBrandsIds=' + brandsIds + '&deviceTypes=' + deviceTypesAbbreviations;
+    let query = 'api/DevicesData/' + this.state.selectedChartType.value + 'Details?year=' + (fullYear ? theArgs[1] : event.indexValue) + '&value=' + (fullYear ? "" : event.id) + '&selectedBrandsIds=' + brandsIds + '&deviceTypes=' + deviceTypesAbbreviations;
     console.log(query);
     fetch(query)
       .then(response => response.json())

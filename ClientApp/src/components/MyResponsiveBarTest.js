@@ -18,12 +18,15 @@ export default class MyResponsiveBarTest extends Component {
             case "Infrared":
             case "MiniJack":
                 finalColors = ["#3399ff", "#f20051",];
+                break; 
+                case "ScreenDensity":
+                finalColors = ["#0091B2", "#00E0B6", "#00DB5F", "#00D60D", "#42D200", "#8DCD00", "#C8BB00", "#C36D00", "#BF2200",];
                 break;
             default:
                 break;
         }
         let data = this.props.data;
-       
+
         let test = JSON.parse(JSON.stringify(data))
         test = test.map(y => {
             let total = Object.keys(y).reduce((reduced, current) => {
@@ -68,13 +71,14 @@ export default class MyResponsiveBarTest extends Component {
                     legend: 'years',
                     legendPosition: 'middle',
                     legendOffset: 42,
+                    onClick: this.props.onClick,
                 }} axisLeft={{
                     tickSize: 5,
-                    tickPadding: 17  ,
+                    tickPadding: 17,
                     tickRotation: 0,
-                    legend: 'amount of different device models',
+                    legend: (this.props.scaled ? 'percentage' : 'amount') + ' of different device models',
                     legendPosition: 'middle',
-                    legendOffset:-15,
+                    legendOffset: -15,
                     format: this.props.scaled ? simpleFormat : noFormat,
                 }} labelSkipWidth={12} labelSkipHeight={12}
                 // labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}

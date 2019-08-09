@@ -58,10 +58,11 @@ namespace ArktiDevicesWebApp {
             // ColorThemes.Add("twilight4", new List<string> { "#FF8260", "#FF4057", "#480544", "#6D0B47" });
             // ColorThemes.Add("twilight4", new List<string> { "#A3124C", "#FF6B61", "#FF4057", "#D12952" });
             ColorThemes.Add("twilight4", new List<string> { "#A3124C", "#D12952", "#FF615C", "#FF987C" });
-            ChartTypes.Add(new ChartType() { Name = "RAM", Path = "Ram", Colors = ColorThemes["RAM"] });
-            ChartTypes.Add(new ChartType() { Name = "Infrared", Path = "Infrared", Colors = ColorThemes["2inverted"] });
-            ChartTypes.Add(new ChartType() { Name = "Mini jack", Path = "MiniJack", Colors = ColorThemes["2"] });
             ChartTypes.Add(new ChartType() { Name = "Device types", Path = "Types", Colors = ColorThemes["twilight4"] });
+            ChartTypes.Add(new ChartType() { Name = "RAM", Path = "Ram", Colors = ColorThemes["RAM"] });
+            ChartTypes.Add(new ChartType() { Name = "Mini jack", Path = "MiniJack", Colors = ColorThemes["2"] });
+            ChartTypes.Add(new ChartType() { Name = "Infrared", Path = "Infrared", Colors = ColorThemes["2inverted"] });
+            ChartTypes.Add(new ChartType() { Name = "Screen pixel density", Path = "ScreenDensity", Colors = ColorThemes["twilight4"] });
         }
     }
     public class Brand {
