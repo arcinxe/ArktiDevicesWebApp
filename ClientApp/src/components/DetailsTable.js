@@ -4,7 +4,7 @@ import DeviceType from './DeviceType';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import Icon from '@mdi/react';
-import { mdiClose, mdiCheck } from '@mdi/js';
+import { mdiClose, mdiCheck, mdiHelpCircle } from '@mdi/js';
 
 export default class DetailsTable extends Component {
   constructor(props) {
@@ -26,6 +26,9 @@ export default class DetailsTable extends Component {
         case "ScreenDensity":
           result = inputData + " ppi";
           break;
+        case "ScreenDiagonal":
+          result = inputData + "\"";
+          break;
         default:
           if (typeof inputData === "boolean")
             result = inputData
@@ -33,6 +36,9 @@ export default class DetailsTable extends Component {
               : <Icon path={mdiClose} size={1} color="#D32F2F" />
           break;
       }
+    }
+    else {
+      result = <Icon path={mdiHelpCircle} size={1} color="#BBBBBB" />
     }
 
     return result;
@@ -48,6 +54,12 @@ export default class DetailsTable extends Component {
         break;
       case "ScreenDensity":
         name = "Screen pixel density";
+        break;
+      case "ScreenDiagonal":
+        name = "Screen diagonal";
+        break;
+      case "AndroidVersion":
+        name = "Android version";
         break;
       default:
         break;

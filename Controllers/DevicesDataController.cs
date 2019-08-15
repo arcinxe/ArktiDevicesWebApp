@@ -70,14 +70,14 @@ namespace ArktiDevicesWebApp.Controllers {
                 PhonesAmount = ph.Select(d => d.Basic.DeviceType).Count()
             })
         });
-      return new { Data = data, Keys = new List<string>() { "audio jack", "no audio jack" } };
+      return new { Data = data, unit = "" };
     }
 
     [HttpGet("[action]")]
     public object MiniJackDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
       var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
       if (!string.IsNullOrWhiteSpace(value)) {
-        var withJack = value.Equals("jack", StringComparison.OrdinalIgnoreCase);
+        var withJack = value.Equals("audio jack", StringComparison.OrdinalIgnoreCase);
         allDevices = allDevices.Where(ph => ph.Communication.AudioJack.HasValue && (!withJack ^ ph.Communication.AudioJack.Value));
       }
       var data = allDevices.Where(p => p.Status.ReleasedDate.Year == year)
@@ -104,7 +104,7 @@ namespace ArktiDevicesWebApp.Controllers {
                 PhonesAmount = ph.Select(d => d.Basic.DeviceType).Count()
             })
         });
-      return new { Data = data, Keys = new List<string>() { "no infrared", "infrared" } };
+      return new { Data = data, unit = "" };
     }
 
     [HttpGet("[action]")]
@@ -138,7 +138,7 @@ namespace ArktiDevicesWebApp.Controllers {
                 PhonesAmount = ph.Select(d => d.Basic.DeviceType).Count()
             })
         });
-      return new { Data = data, Keys = new List<string>() { "smartphones", "cellphones", "tablets", "smartwatches", } };
+      return new { Data = data, unit = "" };
     }
 
     [HttpGet("[action]")]
@@ -168,7 +168,7 @@ namespace ArktiDevicesWebApp.Controllers {
         .ThenBy(ph => ph.Name)
         .Select(ph => new { Name = ph.Name, Brand = ph.Brand, SpecificValue = ph.Basic.DeviceType, DeviceType = ph.Basic.DeviceType, Slug = ph.Basic.Slug })
         .ToList();
-      var results = new { Year = year, Type = deviceType, devices = data };
+      // var results = new { Year = year, Type = deviceType, devices = data };
       return data;
     }
 
@@ -189,8 +189,9 @@ namespace ArktiDevicesWebApp.Controllers {
                 PhonesAmount = ph.Select(d => d.Memory.RandomAccess).Count()
             })
         })
+        .Where(d => d.Data.Count() > 0)
         .Cacheable(TimeSpan.FromSeconds(60));
-      return new { Data = data, Keys = new List<string>() { "<1GB", "1GB", "2GB", "3GB", "4GB", "6GB", "8GB", "10GB", "12GB" } };
+      return new { Data = data, unit = "M|GB" };
     }
 
     [HttpGet("[action]")]
@@ -227,8 +228,9 @@ namespace ArktiDevicesWebApp.Controllers {
                 // Phones = ph.Select(d => d.Name)
             })
         })
+        .Where(d => d.Data.Count() > 0)
         .Cacheable(TimeSpan.FromSeconds(60));
-      return new { Data = data, Keys = new List<string>() { "<100 ppi", "100 ppi", "200 ppi", "300 ppi", "400 ppi", "500 ppi", "600 ppi", "700 ppi", "800 ppi", "900 ppi", } };
+      return new { Data = data, unit = " ppi" };
     }
 
     [HttpGet("[action]")]
@@ -243,6 +245,83 @@ namespace ArktiDevicesWebApp.Controllers {
       }
       var data = allDevices
         .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Display.PixelDensity, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
+        .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
+        .ToList();
+      return data;
+    }
+
+    [HttpGet("[action]")]
+    public object ScreenDiagonal(int startYear = 0, int endYear = 0, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, startYear, endYear);
+
+      var data = allDevices
+        .Where(p => p.Status.ReleasedDate.Year != null)
+        .OrderByDescending(p => p.Status.ReleasedDate.Year)
+        .GroupBy(p => p.Status.ReleasedDate.Year)
+        .Select(p => new {
+          Year = p.Key.ToString(),
+            Data = p
+            .Where(ph => ph.Display.Diagonal.HasValue)
+            .GroupBy(ph => (int) ph.Display.Diagonal < 1 ? "<1\"" : (int) ph.Display.Diagonal + "\"")
+            .Select(ph => new {
+              Diagonal = ph.Key,
+                PhonesAmount = ph.Select(d => d.Display.Diagonal).Count(),
+            })
+        })
+        .Where(d => d.Data.Count() > 0)
+        .Cacheable(TimeSpan.FromSeconds(60));
+      return new { Data = data, unit = "\"" };
+    }
+
+    [HttpGet("[action]")]
+    public object ScreenDiagonalDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
+      if (!string.IsNullOrWhiteSpace(value)) {
+        var least = value.Contains("<");
+
+        var diagonal = least?0 : int.Parse(value.Remove(value.Length - 1, 1));
+        allDevices = allDevices.Where(p => p.Display.Diagonal>= diagonal&& p.Display.Diagonal < diagonal +1);
+      }
+      var data = allDevices
+        .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Display.Diagonal, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
+        .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
+        .ToList();
+      return data;
+    }
+
+    [HttpGet("[action]")]
+    public object AndroidVersion(int startYear = 0, int endYear = 0, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, startYear, endYear);
+
+      var data = allDevices
+        .Where(p => p.Status.ReleasedDate.Year != null)
+        .OrderByDescending(p => p.Status.ReleasedDate.Year)
+        .GroupBy(p => p.Status.ReleasedDate.Year)
+        .Select(p => new {
+          Year = p.Key.ToString(),
+            Data = p
+            .Where(ph => ph.OperatingSystem.Version != null && ph.OperatingSystem.Name == "android")
+            .GroupBy(ph => ph.OperatingSystem.VersionName)
+            .Select(ph => new {
+              value = ph.Key,
+                PhonesAmount = ph.Select(d => d.OperatingSystem.Version).Count(),
+                // Phones = ph.Select(d => d.Name)
+            })
+        })
+        .Where(d => d.Data.Count() > 0)
+        .Cacheable(TimeSpan.FromSeconds(60));
+      return new { Data = data, unit = "" };
+    }
+
+    [HttpGet("[action]")]
+    public object AndroidVersionDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
+      allDevices = allDevices.Where(d => d.OperatingSystem.Name == "android");
+      if (!string.IsNullOrWhiteSpace(value)) {
+        allDevices = allDevices.Where(p => p.OperatingSystem.VersionName == value);
+      }
+      var data = allDevices
+        .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.OperatingSystem.VersionName, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
         .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
         .ToList();
       return data;

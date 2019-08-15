@@ -15,7 +15,6 @@ export class UniversalChart extends Component {
     this.state = {
       devices: [],
       brands: [],
-      keys: [],
       loading: true,
       selectedDeviceTypes: ['s', 'w', 't', 'p'],
       selectedBrands: [],
@@ -24,7 +23,8 @@ export class UniversalChart extends Component {
       selectedChartType: { label: "Device types", value: "Types" },
       grouped: false,
       scaled: false,
-      test: [],
+      stretched: false,
+      unit: "",
     };
 
     this.fetchData = this.fetchData.bind(this);
@@ -72,7 +72,7 @@ export class UniversalChart extends Component {
             return result;
           });
         }
-        this.setState({ devices: formatedData, loading: false, keys: data.keys });
+        this.setState({ devices: formatedData, loading: false, unit: data.unit });
         console.log(formatedData);
       });
   }
@@ -83,8 +83,9 @@ export class UniversalChart extends Component {
   handleSelectingChartType(selectedChartType) {
     this.setState({ selectedChartType: selectedChartType });
   }
-  handleSelectingDeviceTypes(selectedDeviceTypes, grouped, scaled) {
-    this.setState({ selectedDeviceTypes: selectedDeviceTypes, grouped: grouped, scaled: scaled });
+  handleSelectingDeviceTypes(selectedDeviceTypes, grouped, scaled, stretched) {
+    console.log(stretched)
+    this.setState({ selectedDeviceTypes: selectedDeviceTypes, grouped: grouped, scaled: scaled, stretched: stretched });
   }
 
 
@@ -96,6 +97,7 @@ export class UniversalChart extends Component {
     let brandsIds = this.state.selectedBrands.map(b => b.value).join();
     let deviceTypesAbbreviations = this.state.selectedDeviceTypes.join('');
     let query = 'api/DevicesData/' + this.state.selectedChartType.value + 'Details?year=' + (fullYear ? theArgs[1] : event.indexValue) + '&value=' + (fullYear ? "" : event.id) + '&selectedBrandsIds=' + brandsIds + '&deviceTypes=' + deviceTypesAbbreviations;
+
     console.log(query);
     fetch(query)
       .then(response => response.json())
@@ -109,8 +111,9 @@ export class UniversalChart extends Component {
     let labelTextColor = "#191919";
     let contents = this.state.loading
       ? <div><h1>Loading...</h1> <Spinner color="info" /> </div>
-      : <MyResponsiveBarTest data={this.state.devices} keys={this.state.keys} indexBy={indexBy} onClick={this.handleBarClick}
+      : <MyResponsiveBarTest data={this.state.devices} indexBy={indexBy} unit={this.state.unit} onClick={this.handleBarClick}
         labelTextColor={labelTextColor} itemsSpacing={30} name={this.state.selectedChartType.value} grouped={this.state.grouped} scaled={this.state.scaled} ></MyResponsiveBarTest>
+    let height = this.state.stretched ? { height: 1500 } : { height: 500 };
 
     return (
       <div>
@@ -135,7 +138,7 @@ export class UniversalChart extends Component {
         />
         <DeviceTypeButtons
           onChange={this.handleSelectingDeviceTypes} />
-        <div style={{ height: 500 }}>
+        <div style={height}>
           {contents}
         </div>
         <DetailsTable devicesDetails={this.state.selectedDevicesDetails} chartType={this.state.selectedChartType.value} />

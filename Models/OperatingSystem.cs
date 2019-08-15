@@ -5,6 +5,7 @@ namespace ArktiDevicesDatabaseUploader.Models {
         public int OperatingSystemID { get; set; }
         public string Name { get; set; }
         public string Version { get; set; }
+        public string VersionName { get; set; }
         public string LatestVersion { get; set; }
         public string FlavorName { get; set; }
         public string FlavorVersion { get; set; }
@@ -16,6 +17,7 @@ namespace ArktiDevicesDatabaseUploader.Models {
     public class OperatingSystemDefault {
         public string Name { get; set; }
         public string Version { get; set; }
+        public string VersionName { get; set; }
         public string LatestVersion { get; set; }
         public string FlavorName { get; set; }
         public string FlavorVersion { get; set; }

@@ -5,6 +5,7 @@ public class OperatingSystemConvert : IConverter<OperatingSystem, OperatingSyste
         var result = new OperatingSystemDefault() {
             Name = sourceObject.Name,
             Version = sourceObject.Version,
+            VersionName = sourceObject.VersionName,
             LatestVersion = sourceObject.LatestVersion,
             FlavorName = sourceObject.FlavorName,
             FlavorVersion = sourceObject.FlavorVersion
@@ -17,6 +18,7 @@ public class OperatingSystemConvert : IConverter<OperatingSystem, OperatingSyste
         var result = new OperatingSystem() {
             Name = sourceObject.Name,
             Version = sourceObject.Version,
+            VersionName = sourceObject.VersionName,
             LatestVersion = sourceObject.LatestVersion,
             FlavorName = sourceObject.FlavorName,
             FlavorVersion = sourceObject.FlavorVersion

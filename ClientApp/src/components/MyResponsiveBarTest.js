@@ -18,13 +18,48 @@ export default class MyResponsiveBarTest extends Component {
             case "Infrared":
             case "MiniJack":
                 finalColors = ["#3399ff", "#f20051",];
-                break; 
-                case "ScreenDensity":
+                break;
+            case "ScreenDensity":
                 finalColors = ["#0091B2", "#00E0B6", "#00DB5F", "#00D60D", "#42D200", "#8DCD00", "#C8BB00", "#C36D00", "#BF2200",];
                 break;
+            case "AndroidVersion":
+                finalColors = ["#f22090", "#e420f2", "#c899f2", "#201ff2", "#2074f2", "#20acf2", "#20e4f2", "#20f2ac", "#90f220", "#a8bf78", "#f2e420", "#f2ac1f", "#f2741f", "#f29999", "#f2201f"];
+                break;
+            case "ScreenDiagonal":
+                finalColors = ["#e81010", "#f5d28c", "#2ff511", "#428dcf", "#db7dc8", "#e89284", "#e8de4a", "#4ae874", "#4a4ae8", "#f54e91", "#f56c11", "#c7f511", "#10e8bd", "#9a8cf5", "#e84a5f", "#e89e4a", "#a5cf76", "#46bddb", "#f511e6"];
+                break;
             default:
+                // finalColors = { scheme: 'set3' };
+                finalColors = ["#0091B2", "#00E0B6", "#00DB5F", "#00D60D", "#42D200", "#8DCD00", "#C8BB00", "#C36D00", "#BF2200",];
                 break;
         }
+
+        let keys = new Set(this.props.data.map(y => Object.keys(y)).flat());
+        keys.delete("year");
+        // console.log(keys);
+        let regexp = new RegExp(this.props.unit);
+
+        let sortedKeys = [...keys]
+        // console.log(sortedKeys);
+
+        switch (this.props.name) {
+            case "Types":
+                sortedKeys = ["cellphones", "smartphones", "smartwatches", "tablets",]
+                break;
+            case "Infrared":
+                sortedKeys = ["infrared", "no infrared"]
+                break;
+            case "MiniJack":
+                sortedKeys = ["audio jack", "no audio jack"]
+                break;
+            case "AndroidVersion":
+                sortedKeys = ["Cupcake", "Donut", "Éclair", "Froyo", "Gingerbread", "Honeycomb", "Ice Cream Sandwich", "Jelly Bean", "KitKat", "Lollipop", "Marshmallow", "Nougat", "Oreo", "Pie",]
+                break;
+            default:
+                sortedKeys = sortedKeys.sort((a, b) => a.replace(regexp, "").replace("<1", "") - b.replace(regexp, "").replace("<1", ""));
+                break;
+        }
+
         let data = this.props.data;
 
         let test = JSON.parse(JSON.stringify(data))
@@ -52,11 +87,12 @@ export default class MyResponsiveBarTest extends Component {
             data = test;
         }
 
+
         const format = v => `${v.toFixed(2)}%`
         const simpleFormat = v => `${Math.floor(v)}%`
         const noFormat = v => v;
         return (
-            <ResponsiveBar data={data} keys={this.props.keys} indexBy={this.props.indexBy}
+            <ResponsiveBar data={data} keys={sortedKeys} indexBy={this.props.indexBy}
                 labelFormat={this.props.scaled ? simpleFormat : noFormat}
                 tooltipFormat={this.props.scaled ? format : noFormat}
                 // axisLeft={{ format }}
