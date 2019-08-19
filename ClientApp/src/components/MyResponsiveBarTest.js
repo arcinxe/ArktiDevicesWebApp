@@ -118,7 +118,7 @@ export default class MyResponsiveBarTest extends Component {
                     format: this.props.scaled ? simpleFormat : noFormat,
                 }} labelSkipWidth={12} labelSkipHeight={12}
                 // labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                legends={[
+                legends={this.props.scaled ? [] : [
                     {
                         dataFrom: 'keys',
                         anchor: 'top-left',
@@ -141,7 +141,8 @@ export default class MyResponsiveBarTest extends Component {
                             }
                         ]
                     },
-                ]} animate={true} motionStiffness={250} motionDamping={40} onClick={this.props.onClick} groupMode={this.props.grouped ? "grouped" : "stacked"} />);
+                ]}
+                animate={true} motionStiffness={250} motionDamping={40} onClick={this.props.onClick} groupMode={this.props.grouped ? "grouped" : "stacked"} />);
     }
 }
 

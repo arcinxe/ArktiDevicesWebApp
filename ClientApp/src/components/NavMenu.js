@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Icon from '@mdi/react';
+import { mdiGithubCircle } from '@mdi/js';
 import './NavMenu.css';
-// import Icon from '@mdi/react';
-// import { mdiTabletCellphone, } from '@mdi/js';
 import Logo from './Logo';
 
 
@@ -40,18 +40,12 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/charts">Charts</NavLink>
                 </NavItem>
-                {/* <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/infrared">Infrared</NavLink>
-                </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/ram">RAM</NavLink>
-                </NavItem> */}
-                {/* <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/devices">devices</NavLink>
+                  <NavLink href="https://github.com/arcinxe/ArktiDevicesWebApp" className="text-dark" >
+                    <span>GitHub </span>
+                    <Icon path={mdiGithubCircle} size={1} color="#343a40" />
+                  </NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/minijack">TestPage</NavLink>
-                </NavItem> */}
               </ul>
             </Collapse>
           </Container>
