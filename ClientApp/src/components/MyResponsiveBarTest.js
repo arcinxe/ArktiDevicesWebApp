@@ -10,6 +10,8 @@ export default class MyResponsiveBarTest extends Component {
         let finalColors = [];
         switch (this.props.name) {
             case "Ram":
+            case "UsbVersion":
+            case "UsbPort":
                 finalColors = ["#0091B2", "#00E0B6", "#00DB5F", "#00D60D", "#42D200", "#8DCD00", "#C8BB00", "#C36D00", "#BF2200",];
                 break;
             case "Types":

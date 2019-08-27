@@ -280,7 +280,7 @@ namespace ArktiDevicesWebApp.Controllers {
         var least = value.Contains("<");
 
         var diagonal = least?0 : int.Parse(value.Remove(value.Length - 1, 1));
-        allDevices = allDevices.Where(p => p.Display.Diagonal>= diagonal&& p.Display.Diagonal < diagonal +1);
+        allDevices = allDevices.Where(p => p.Display.Diagonal >= diagonal && p.Display.Diagonal < diagonal + 1);
       }
       var data = allDevices
         .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Display.Diagonal, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
@@ -322,6 +322,82 @@ namespace ArktiDevicesWebApp.Controllers {
       }
       var data = allDevices
         .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.OperatingSystem.VersionName, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
+        .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
+        .ToList();
+      return data;
+    }
+
+    [HttpGet("[action]")]
+    public object UsbVersion(int startYear = 0, int endYear = 0, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, startYear, endYear);
+
+      var data = allDevices
+        .Where(p => p.Status.ReleasedDate.Year != null)
+        .OrderByDescending(p => p.Status.ReleasedDate.Year)
+        .GroupBy(p => p.Status.ReleasedDate.Year)
+        .Select(p => new {
+          Year = p.Key.ToString(),
+            Data = p
+            .Where(ph => ph.Communication.Usb.Version != null)
+            .GroupBy(ph => ph.Communication.Usb.Version)
+            .Select(ph => new {
+              Usb = ph.Key,
+                PhonesAmount = ph.Select(d => d.Communication.Usb.Version).Count(),
+                // Phones = ph.Select(d => d.Name)
+            })
+        })
+        .Where(d => d.Data.Count() > 0)
+        .Cacheable(TimeSpan.FromSeconds(60));
+      return new { Data = data, unit = "" };
+    }
+
+    [HttpGet("[action]")]
+    public object UsbVersionDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
+      if (!string.IsNullOrWhiteSpace(value)) {
+        allDevices = allDevices.Where(p => p.Communication.Usb.Version == value);
+      }
+      var data = allDevices
+        .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Communication.Usb.Version, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
+        .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
+        .ToList();
+      return data;
+    }
+
+
+    
+    [HttpGet("[action]")]
+    public object UsbPort(int startYear = 0, int endYear = 0, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, startYear, endYear);
+
+      var data = allDevices
+        .Where(p => p.Status.ReleasedDate.Year != null)
+        .OrderByDescending(p => p.Status.ReleasedDate.Year)
+        .GroupBy(p => p.Status.ReleasedDate.Year)
+        .Select(p => new {
+          Year = p.Key.ToString(),
+            Data = p
+            .Where(ph => ph.Communication.Usb.Connector != null)
+            .GroupBy(ph => ph.Communication.Usb.Connector=="pop-port"?"proprietary":ph.Communication.Usb.Connector)
+            .Select(ph => new {
+              Usb = ph.Key,
+                PhonesAmount = ph.Select(d => d.Communication.Usb.Connector).Count(),
+                // Phones = ph.Select(d => d.Name)
+            })
+        })
+        .Where(d => d.Data.Count() > 0)
+        .Cacheable(TimeSpan.FromSeconds(60));
+      return new { Data = data, unit = "" };
+    }
+
+    [HttpGet("[action]")]
+    public object UsbPortDetails(int year, string value, string selectedBrandsIds = "", string deviceTypes = "") {
+      var allDevices = _filter.Filter(selectedBrandsIds, deviceTypes, year, year);
+      if (!string.IsNullOrWhiteSpace(value)) {
+        allDevices = allDevices.Where(p => p.Communication.Usb.Connector == value);
+      }
+      var data = allDevices
+        .Select(p => new { Name = p.Name, Brand = p.Brand, SpecificValue = p.Communication.Usb.Connector, DeviceType = p.Basic.DeviceType, Slug = p.Basic.Slug })
         .OrderBy(p => p.Brand).ThenBy(p => p.SpecificValue)
         .ToList();
       return data;

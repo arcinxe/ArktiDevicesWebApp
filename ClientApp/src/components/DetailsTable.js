@@ -49,6 +49,12 @@ export default class DetailsTable extends Component {
       case "Ram":
         name = "RAM"
         break;
+        case "UsbVersion":
+          name = "USB version"
+          break;
+          case "UsbPort":
+            name = "USB port"
+            break;
       case "Types":
         name = "Type";
         break;

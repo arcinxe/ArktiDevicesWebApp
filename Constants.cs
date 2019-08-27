@@ -54,6 +54,8 @@ namespace ArktiDevicesWebApp {
             ChartTypes.Add(new ChartType() { Name = "Infrared", Path = "Infrared" });
             ChartTypes.Add(new ChartType() { Name = "Screen size", Path = "ScreenDiagonal" });
             ChartTypes.Add(new ChartType() { Name = "Screen pixel density", Path = "ScreenDensity" });
+            ChartTypes.Add(new ChartType() { Name = "USB ports", Path = "UsbPort" });
+            ChartTypes.Add(new ChartType() { Name = "USB versions", Path = "UsbVersion" });
         }
     }
     public class Brand {
