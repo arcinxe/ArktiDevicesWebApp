@@ -36,13 +36,13 @@ public class DeviceContext : DbContext {
             .UseLazyLoadingProxies (true)
             // .UseSqlServer(@"server=localhost;database=ArktiPhones;User ID=sa;password=Qwertyui0;");
             // .UseOracle (@"User Id=C##arktin;Password=Qwertyui0;Data Source=localhost:1521/orcl");
-            // .UseSqlite ("Data Source=ArktiPhones.db");
-            .UseMySql("Server=remotemysql.com;Database=BIbIrfTkeG;User=BIbIrfTkeG;Password=dZ24h8JDwg;port=3306", // replace with your Connection String
-                    mySqlOptions =>
-                    {
-                        mySqlOptions.ServerVersion(new Version(8, 0, 13), ServerType.MySql); // replace with your Server Version and Type
-                    }
-             );
+            .UseSqlite ("Data Source=ArktiPhones.db");
+            // .UseMySql("Server=remotemysql.com;Database=BIbIrfTkeG;User=BIbIrfTkeG;Password=dZ24h8JDwg;port=3306", // replace with your Connection String
+            //         mySqlOptions =>
+            //         {
+            //             mySqlOptions.ServerVersion(new Version(8, 0, 13), ServerType.MySql); // replace with your Server Version and Type
+            //         }
+            //  );
     }
 
 }

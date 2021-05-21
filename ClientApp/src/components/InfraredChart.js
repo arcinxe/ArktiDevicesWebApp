@@ -23,7 +23,7 @@ export class InfraredChart extends Component {
     fetch(query)
       .then(response => response.json())
       .then(brands => {
-        this.setState({ brands: brands.map(brand => ({ label: brand.name, value: brand.id })) })
+        this.setState({ brands: brands.map(brand => ({ label: brand.name+" ["+brand.numberOfDevices+"]", value: brand.id })) })
         console.log("result from brands");
         console.log(brands);
 
@@ -99,7 +99,7 @@ export class InfraredChart extends Component {
     let colors =[ '#42A5F5', '#E57373'];
     let contents = this.state.loading
       ? <div><p><em>Loading...</em></p> <Spinner color="info" /> </div>
-      : <MyResponsiveBarTest data={this.state.phones} keys={keys} indexBy={indexBy} onClick={this.handleBarClick} colors={colors}></MyResponsiveBarTest>
+      : <MyResponsiveBarTest data={this.state.phones} keys={keys} indexBy={indexBy} onClick={this.handleBarClick} colors={colors} itemsSpacing={30}></MyResponsiveBarTest>
 
     // let table = this.state.loading
     //   ? <tbody>
